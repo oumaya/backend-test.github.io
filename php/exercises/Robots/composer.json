@@ -1,0 +1,12 @@
+{  "autoload": {
+        "classmap": [
+            "./src/"
+        ]
+    },
+    "name": "test/robot",
+    "description": "tttt",
+    "require": {},
+    "require-dev": {
+        "phpunit/phpunit": "^8"
+    }
+}
