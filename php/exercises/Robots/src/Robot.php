@@ -1,12 +1,18 @@
 <?php
 declare(strict_types=1);
+namespace App;
 
 class Robot
 {
     public  $type;
     public  $name;
+    const FILENAME = './file.csv';
 
     function __construct($typeRobot) {
+
+        $fp = fopen(self::FILENAME, 'ab+');
+        fclose($fp);
+
         $this->type = $this->detectType($typeRobot);
         $this->name = $this->generateName();
     }
@@ -28,13 +34,30 @@ class Robot
 
     }
 
-    public function generateName(): string
+    public function generateName(bool $saveName = true): string
     {
 
-        $randLetters = substr(str_shuffle(str_repeat("abcdefghijklmnopqrstuvwxyz", 5)), 0, 2);
-        $robotName = $this->type.random_int(100, 999).strtoupper($randLetters);
-        /* avec cette methode il pourrai avoir des duplications, si on veut vraiment la regler il nous faut une base de données
-         * */
+       $randLetters = substr(str_shuffle(str_repeat("abcdefghijklmnopqrstuvwxyz", 5)), 0, 2);
+       $robotName = $this->type.random_int(100, 999).strtoupper($randLetters);
+
+	    $csv = array();
+	    $lines = file(self::FILENAME, FILE_IGNORE_NEW_LINES);
+        foreach ($lines as $key => $value)
+        {
+            $csv[$key] = str_getcsv($value);
+        }
+        foreach ($csv as $k => $val)
+        {
+            if($robotName==$val[0]){
+                $robotName = $this->generateName(false);
+            }
+        }
+        if ($saveName){
+            $fp = fopen(self::FILENAME, 'a');
+            fputcsv($fp, (array)$robotName);
+            fclose($fp);
+        }
+
         return $robotName;
     }
 
@@ -44,18 +67,7 @@ class Robot
 
         if($typeRobot == 'walking') return 'WL';
         if($typeRobot == 'flying') return 'FL';
-        throw new Exception($typeRobot.' is invalid robot type , must been walking or flying');
+        throw new \InvalidArgumentException($typeRobot.' is invalid robot type , must been walking or flying');
 
     }
-
-
-
 }
-/* must comment this part , for unit test */
-$a = new Robot('walking');
-
-var_dump('the first name of this robot is : '.$a->name);
-var_dump($a->fly());
-var_dump($a->walk());
-$a->reset();
-var_dump('the name after reset is : '.$a->name);
