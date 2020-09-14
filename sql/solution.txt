@@ -1,0 +1,11 @@
+A) select * from `author` where `last_name` like "M%" and YEAR (birth_date)>=1950
+
+B) select category.name as cat, count(book.id) as num_books from `book` left join category on (book.category_id = category.id) group by book.category_id
+
+C) select author.first_name from author inner join (select author_id from book groupe by author_id having count(author_id)>=2) book on book.author_id=author.id
+
+D) select DISTINCT author.last_name from `author` INNER join `author_event` on (author.id= author_event.author_id) LEFT JOIN `event` ON (event.id= author_event.event_id) where event.date between '2020-01-01' and '2020-12-31' Limit 50
+
+E) select author.first_name, count(*) from `author` inner join `book` on (author.id = book.author_id) group by author.id order by count(*) DESC
+
+F) select author.first_name as `authorName`, event.date `lastEventDate` from `author` INNER join `author_event` on (author.id= author_event.author_id) LEFT JOIN `event` ON (event.id= author_event.event_id) GROUP BY author.first_name order by event.date DESC
