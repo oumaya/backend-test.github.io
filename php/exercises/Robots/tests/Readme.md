@@ -17,6 +17,11 @@ exercice paths:
 src : pour Robot.php
 tests: pour RobotTest.php
 
+
+commande d'excution : 
+php run.php
+
 commande de test :
 
 ./vendor/bin/phpunit tests
+php vendor/bin/phpunit test
