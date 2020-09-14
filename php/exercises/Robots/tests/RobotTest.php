@@ -1,7 +1,8 @@
 <?php
-declare(strict_types=1);
+declare(strict_types=1); 
 
 use PHPUnit\Framework\TestCase;
+use App\Robot;
 
 final class RobotTest extends TestCase
 {
@@ -42,7 +43,7 @@ final class RobotTest extends TestCase
         $robot = new Robot('walking');
         $this->assertEquals(
             'robot walking',
-            $robot ->fly()
+            $robot ->walk()
         );
     }
     public function testCantWalking(): void
